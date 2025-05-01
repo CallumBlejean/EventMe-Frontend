@@ -146,4 +146,21 @@ export function deleteUserAccount(userId) {
     });
   }
   
+  export function createGoogleCalendarLink(event) {
+    const startDate = new Date(event.date);
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // Default to 1 hour duration
+  
+    const formatDate = (date) => date.toISOString().replace(/[-:]|\.\d{3}/g, "").slice(0, 15);
+  
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: event.title,
+      details: event.description,
+      location: event.location,
+      dates: `${formatDate(startDate)}/${formatDate(endDate)}`
+    });
+  
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  }
+
   

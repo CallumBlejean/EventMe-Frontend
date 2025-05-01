@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchEventById, fetchEventMembers, joinEvent, leaveEvent, deleteEvent } from "../api";
+import {
+  fetchEventById,
+  fetchEventMembers,
+  joinEvent,
+  leaveEvent,
+  deleteEvent,
+  createGoogleCalendarLink,
+} from "../api";
 import { useAuth } from "../AuthContext";
 
 const EventDetails = () => {
@@ -15,10 +22,7 @@ const EventDetails = () => {
   const [messageType, setMessageType] = useState("");
 
   useEffect(() => {
-    Promise.all([
-      fetchEventById(event_id),
-      fetchEventMembers(event_id)
-    ])
+    Promise.all([fetchEventById(event_id), fetchEventMembers(event_id)])
       .then(([eventRes, membersRes]) => {
         setEvent(eventRes.data.event);
         setMembers(membersRes.data.members);
@@ -35,11 +39,14 @@ const EventDetails = () => {
     setJoining(true);
     joinEvent(event_id)
       .then(() => {
-        setMembers((prev) => [...prev, {
-          user_id: user.userId,
-          name: user.userName,
-          email: user.email
-        }]);
+        setMembers((prev) => [
+          ...prev,
+          {
+            user_id: user.userId,
+            name: user.userName,
+            email: user.email,
+          },
+        ]);
         setMessage("You successfully joined the event!");
         setMessageType("success");
       })
@@ -55,7 +62,7 @@ const EventDetails = () => {
     setJoining(true);
     leaveEvent(event_id, user.userId)
       .then(() => {
-        setMembers((prev) => prev.filter(m => m.user_id !== user.userId));
+        setMembers((prev) => prev.filter((m) => m.user_id !== user.userId));
         setMessage("You have left the event.");
         setMessageType("success");
       })
@@ -68,7 +75,12 @@ const EventDetails = () => {
   };
 
   const handleDeleteEvent = () => {
-    if (!window.confirm("Are you sure you want to delete this event? This action cannot be undone.")) return;
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this event? This action cannot be undone."
+      )
+    )
+      return;
     deleteEvent(event_id)
       .then(() => {
         navigate("/find-events");
@@ -87,11 +99,21 @@ const EventDetails = () => {
   return (
     <div className="event-details-container">
       <h1>{event.title}</h1>
-      <p><strong>Date:</strong> {new Date(event.date).toLocaleString()}</p>
-      <p><strong>Location:</strong> {event.location}</p>
-      <p><strong>Description:</strong> {event.description}</p>
-      <p><strong>Created by:</strong> {event.created_by}</p>
-      <p><strong>Attendees:</strong> {members.length}</p>
+      <p>
+        <strong>Date:</strong> {new Date(event.date).toLocaleString()}
+      </p>
+      <p>
+        <strong>Location:</strong> {event.location}
+      </p>
+      <p>
+        <strong>Description:</strong> {event.description}
+      </p>
+      <p>
+        <strong>Created by:</strong> {event.created_by}
+      </p>
+      <p>
+        <strong>Attendees:</strong> {members.length}
+      </p>
 
       {isMember && (
         <p style={{ color: "green", fontWeight: "bold", marginTop: "1em" }}>
@@ -101,7 +123,9 @@ const EventDetails = () => {
 
       {message && (
         <p
-          className={messageType === "success" ? "success-message" : "error-message"}
+          className={
+            messageType === "success" ? "success-message" : "error-message"
+          }
           style={{ marginTop: "1em" }}
         >
           {message}
@@ -118,8 +142,24 @@ const EventDetails = () => {
         </button>
       )}
 
+      {event && (
+        <a
+          href={createGoogleCalendarLink(event)}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ marginTop: "1em", display: "inline-block" }}
+        >
+          <button style={{ backgroundColor: "#4285F4" }}>
+            Add to Google Calendar
+          </button>
+        </a>
+      )}
+
       {user?.userStatus === "admin" && (
-        <button onClick={handleDeleteEvent} style={{ marginTop: "1em", backgroundColor: "#cc0000" }}>
+        <button
+          onClick={handleDeleteEvent}
+          style={{ marginTop: "1em", backgroundColor: "#cc0000" }}
+        >
           Delete Event
         </button>
       )}
