@@ -1,52 +1,66 @@
-EventMe Frontend
-This is the frontend for the EventMe app.
+# EventMe Frontend
 
-Description
-The EventMe frontend is a React-based interface that allows users to sign up, log in, browse public events, join or leave events, and view their profile. Admin and staff users can also create and manage events. The app uses Firebase for authentication and communicates with a backend API to manage event data and user roles.
+This is the frontend for the **EventMe** app.
 
-Tech Stack
-React
+## Description
 
-Firebase Authentication
+The EventMe frontend is a **React-based** interface that allows users to:
 
-React Router
+- Sign up  
+- Log in  
+- Browse public events  
+- Join or leave events  
+- See how popular an event is  
 
-Axios
+**Admin and staff users** can also create and manage events.  
+The app uses **Firebase** for authentication and communicates with a **backend API** to manage event data and user roles.
 
-CSS
+## Tech Stack
 
-Setup Instructions
-Clone this repository:
-git clone https://github.com/CallumBlejean/EventMe-Frontend
+- React  
+- Firebase Authentication  
+- React Router  
+- Axios  
+- CSS
 
-Install dependencies:
-npm install
+## Setup Instructions
 
-Add your Firebase config to .firebaseConfig.js
+1. Clone this repository:
 
-Run the app:
-npm run dev
+   ```bash
+   git clone https://github.com/CallumBlejean/EventMe-Frontend
+   ```
 
-Available Pages
-Login
+2. Install dependencies:
 
-Signup
+   ```bash
+   npm install
+   ```
 
-Forgot Password
+3. Add your Firebase config to `.firebaseConfig.js`
 
-Home
+4. Run the app:
 
-Find Events
+   ```bash
+   npm run dev
+   ```
 
-My Events
+## Available Pages
 
-Create Event (for staff/admin)
+- Login  
+- Signup  
+- Forgot Password  
+- Home  
+- About
+- Find Events  
+- My Events (Can add to google calendar when you join an event.)
+- Create Event (for staff/admin)  
+- Event Details  
+- Profile (Delete account)
+- Admin Control (Change user access and control)
 
-Event Details
+## Notes
 
-Profile
-
-Notes
-Protected routes require login
-
-Admins and staff can create events
+- Protected routes require login  
+- Admins and staff can create events
+- Admins can promote to staff and ban people
