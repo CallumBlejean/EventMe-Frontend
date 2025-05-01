@@ -142,7 +142,7 @@ const EventDetails = () => {
         </button>
       )}
 
-      {event && (
+      {isMember && event && (
         <a
           href={createGoogleCalendarLink(event)}
           target="_blank"
